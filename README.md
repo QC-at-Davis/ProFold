@@ -6,7 +6,7 @@ Molecular dynamics methods are the gold standard for protein folding, as it allo
 
 However, this scaling gets worse when also including the electronic bases of each atom in quantum based modeling. While CHARMM scales in O(N^2) (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2810661/), quantum based methods scale in O(N^4) (https://pubs.rsc.org/en/content/articlelanding/2022/sc/d1sc05691c?ref=banner). 
 
-For these reasons, this project aims to combined the best in classical modeling - FPGA based CHARMM models, such as this one (https://www.bu.edu/caadlab/hprcta_09.pdf) - with quantum methods - VQE and/or QFT for electronic shell modeling, such as this one (https://pubs.rsc.org/en/content/articlelanding/2022/sc/d1sc05691c?ref=banner)  - in order to create a faster, more accurate pipeline for protein folding.
+For these reasons, this project aims to combined the best in classical modeling - FPGA based CHARMM models, such as this one (https://www.bu.edu/caadlab/hprcta_09.pdf) - with quantum methods - VQE and/or QFT for electronic shell modeling, such as this one (https://pubs.rsc.org/en/content/articlelanding/2022/sc/d1sc05691c?ref=banner)  - in order to create a faster, more accurate pipeline for protein folding. We aim to submit these results to CASP15 (https://www.predictioncenter.org/casp15/).
 
 
 
