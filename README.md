@@ -1,28 +1,35 @@
-# GroveFold
-Attempt at protein folding utilizing Grover's Search Algorithm 
+# ProFold
+A molecular dynamics approach to protein folding, using GROMACS with CHARMM on an FPGA for classical molecular modeling and the Variational Quantum Eigensolver (VQE)/Quantum Fourier Transform (QFT) for modeling the electronic shells of each atom. 
 
-# Why?
+# Why? 
+Molecular dynamics methods are the gold standard for protein folding, as it allows for easy setup of a solvent and other environmental details that can effect the folding. However, at the least, 1 microsecond of protein movement needs to be completed to gain an accurate fold, as detailed here (https://www.bu.edu/caadlab/Khan13.pdf). Considering that GPUs can only achieve around 100 ns/day of modeling (https://arxiv.org/abs/2201.06372), it would take at least 10 days on one of these devices to get to a basic folded structure using GROMACS with CHARMM.
 
-One of the fastest search algorithms for large datastores was one designed by Lov Grover at Bell Labs in the late 1990s, which focuses on taking states from quantum bits, or qubits, and inversing the amplitude of the wavelength on each qubit by the mean amplitude of all qubits after the application of the rotation of the qubit, known as an oracle step, one is looking for to see what which qubit is to that output rotation (https://dl.acm.org/doi/pdf/10.1145/237814.237866?casa_token=Fzv_S6TcwzEAAAAA%3Ah0xNTFldKN6XAljMZt9Slzg_ma-Q0w6cfx7PgF0OzmUT8fglYpNGHEUm2t71-35cGAFiglHvOlk). In completing this process on a superconducting qubit, one inadvertently is determining the most electronically excited of the qubits in some formation given the rotation provided, as this "Grover's Effect" has been seen in actual electronic stuctures (https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.124.180501). For this reason, we theorize that Grover's Search Algorihtm could be utilized for determing the folding pattern of proteins by utilizing qubits as analogues for the electronic states of the atoms and the oracle state resulting from electronic interactions with water or the solvent a protein is in.
+However, this scaling gets worse when also including the electronic bases of each atom in quantum based modeling. While CHARMM scales in O(N^2) (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2810661/), quantum based methods scale in O(N^4) (https://pubs.rsc.org/en/content/articlelanding/2022/sc/d1sc05691c?ref=banner). 
+
+For these reasons, this project aims to combined the best in classical modeling - FPGA based CHARMM models, such as this one (https://www.bu.edu/caadlab/hprcta_09.pdf) - with quantum methods - VQE and/or QFT for electronic shell modeling, such as this one (https://pubs.rsc.org/en/content/articlelanding/2022/sc/d1sc05691c?ref=banner)  - in order to create a faster, more accurate pipeline for protein folding. We aim to submit these results to CASP15 (https://www.predictioncenter.org/casp15/).
+
+
 
 # What is this project? How do I interact with it? 
+This project is a collaborative, open source piece of work. There is no stable verison that can be picked up and used as of yet. Certain features can be run as scripts on their own, but full integration is still to be completed.
 
-This project is an truly collaborative, open source piece of work. There is no stable verison that can be picked up and used as of yet. 
-
-To use the latest version of the project, make sure to clone this git repo, install the right packages, and run from the "main.py" script. 
-
-If you would like to add to the project, take a look at the Issues, fork the repo, and start working away at them. Feel free to also come to QCAD meetings,join the Discord, or add an issue for the project if you would like to chat about other additions to the project or current problems. 
+If you would like to add to the project, take a look at the Issues, fork the repo, start working away at them, and submit PRs. Feel free to also come to QCAD meetings, join the Discord(https://discord.gg/8VCtsuve), or add an issue for the project if you would like to chat about other additions to the project or current problems. 
 
 
-# High Level Road Map
+# High Level Overview of How This Would Work
 
-1. Allow for breakup of PDB files into subgraphs with electronic details that water based oracles can be applied to for a base folding system using Pennylane from Xanadu with the Tensorflow interface to allow for easy testability and scalability classically (https://pennylane.ai/qml/demos/qsim_beyond_classical.html) 
-2. Run some tests that determine the effectiveness of this algorithm (Feel free to suggest some cases in the issues)
-3. Testing and comparison with physical quantum device, such as the IonQ device https://docs.microsoft.com/en-us/azure/quantum/tutorial-qdk-grovers-search?tabs=tabid-visualstudio 
+1. Translate FASTA sequences of amino acids into 3D monomer files by using Open Babel 2.4.1 (https://sourceforge.net/projects/openbabel/files/openbabel/2.4.1/) (NOTE: Only this version accurately translates over the amino acid columns to the PDB, the newest version does not) 
+
+2. Run this monomer within a water model in GROMACS with CHARMM, following these steps (https://manual.gromacs.org/current/user-guide/flow.html), saving energy values and PDB
+
+3. Take PDB ouputted from step 2, find Gaussian bases, and make a quantum circuit with those bases 
+
+4. Complete VQE or QFT on these bases to find ground state energy 
+
+5. Inverse fourier transform the results to regain coordinates for an updated PDB
 
 
 # Getting Started
-
 Packages Needed:
 1. anaconda3 https://docs.anaconda.com/anaconda/install/linux/
 2. qsharp and all its related tooling https://docs.microsoft.com/en-us/azure/quantum/install-python-qdk?tabs=tabid-conda
