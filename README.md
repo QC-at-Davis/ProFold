@@ -28,6 +28,8 @@ If you would like to add to the project, take a look at the Issues, fork the rep
 
 5. Inverse fourier transform the results to regain coordinates for an updated PDB
 
+6. Compare results to other protein structures using Topological Data Analysis (TDA) tools such as Ripser++ (https://github.com/simonzhang00/ripser-plusplus)
+
 
 # Getting Started
 Packages Needed:
