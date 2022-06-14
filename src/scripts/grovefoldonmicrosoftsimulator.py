@@ -31,7 +31,7 @@ def groversAlgorithm(subgraphRotations=None, oracalizedRotation=None, simulation
             qml.RZ(oracle, wires=i)
 
         qml.MultiRZ(oracle,wires=[i for i in range(0,wires)])
-            qml.Hadamard(i)
+        qml.Hadamard(i)
         for i in range (0,wires):
             qml.PauliX(wires=i)
         
